@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $release_year = trim($_POST["year"]);
     $status = isset($_POST["owned"]) ? 1 : 0;
 
-    // Step 1: Check if the game already exists
+    // Check if the game already exists
     $stmt = $conn->prepare("SELECT id FROM games WHERE title = ? AND platform = ?");
     $stmt->bind_param("ss", $game_name, $platform);
     $stmt->execute();
@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt->fetch();
     $stmt->close();
 
-    // Step 2: If game doesn't exist, insert it
+    // If game doesn't exist, insert it
     if (!$game_id) {
         $stmt = $conn->prepare("INSERT INTO games (title, platform, release_year) VALUES (?, ?, ?)");
         $stmt->bind_param("ssi", $game_name, $platform, $release_year);
@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt->close();
     }
 
-    // Step 3: Check if the game is already in user_games
+    // Check if the game is already in user_games
     $stmt = $conn->prepare("SELECT id FROM user_games WHERE game_id = ? AND user_id = ?");
     $stmt->bind_param("ii", $game_id, $user_id);
     $stmt->execute();
@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt->fetch();
     $stmt->close();
 
-    // Step 4: If the game is NOT already in user_games, insert it
+    // If the game is NOT already in user_games, insert it
     if (!$existing_entry) {
         $stmt = $conn->prepare("INSERT INTO user_games (game_id, user_id, status, added_at) VALUES (?, ?, ?, NOW())");
         $stmt->bind_param("iii", $game_id, $user_id, $status);
