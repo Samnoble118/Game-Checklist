@@ -9,8 +9,8 @@
             "server": "localhost",
             "port": 3306,
             "driver": "MySQL",
-            "database": "game_checklist",
             "name": "Game Checklist",
+            "database": "game_checklist",
             "username": "root",
             "password": "Shadow11!"
         }
